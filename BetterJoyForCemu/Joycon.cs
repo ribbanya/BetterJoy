@@ -1345,7 +1345,6 @@ namespace BetterJoyForCemu {
                 output.start = buttons[(int)Button.PLUS];
                 output.guide = buttons[(int)Button.HOME];
 
-                output.shoulder_left = buttons[(int)Button.SHOULDER_1];
                 output.shoulder_right = buttons[(int)Button.SHOULDER2_1];
 
                 output.thumb_stick_left = buttons[(int)Button.STICK];
@@ -1404,7 +1403,22 @@ namespace BetterJoyForCemu {
                 }
             }
 
-            if (other != null || isPro) {
+            if (isPro) {
+                byte GetLeftTrigger()
+                {
+                    if (buttons[(int)(Button.SHOULDER_2)])
+                        return 94;
+
+                    if (buttons[(int)Button.SHOULDER_1])
+                        return 49;
+                    
+                    return 0;
+                }
+
+                output.trigger_left = GetLeftTrigger();
+                output.trigger_right = (byte)(buttons[(int)(Button.SHOULDER2_2)] ? Byte.MaxValue : 0);
+            }
+            else if (other != null) {
                 byte lval = GyroAnalogSliders ? sliderVal[0] : Byte.MaxValue;
                 byte rval = GyroAnalogSliders ? sliderVal[1] : Byte.MaxValue;
                 output.trigger_left = (byte)(buttons[(int)(isLeft ? Button.SHOULDER_2 : Button.SHOULDER2_2)] ? lval : 0);
